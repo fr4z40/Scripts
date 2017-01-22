@@ -11,7 +11,7 @@
 #
 
 from subprocess import call
-from os import walk, path
+from os import walk
 from argparse import ArgumentParser, RawTextHelpFormatter
 
 desc = '''
