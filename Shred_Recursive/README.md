@@ -1,0 +1,1 @@
+./shred_dir.py -a=args -n=iterations

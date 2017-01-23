@@ -1,0 +1,1 @@
+./chk_dpl.py /full_path/folder/
