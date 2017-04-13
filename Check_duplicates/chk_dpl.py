@@ -17,8 +17,11 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 
 
 def md5sum(file_path):
-    rst = ((check_output(('md5sum "%s"' % file_path), shell=True)).decode())
-    return(rst.split()[0].strip())
+    try:
+        rst = ((check_output(('md5sum "%s"' % file_path), shell=True)).decode())
+        return(rst.split()[0].strip())
+    except:
+        return(None)
 
 
 
@@ -38,7 +41,11 @@ if __name__ == '__main__':
         for fl in dr[2]:
             fl_path = (('%s/%s' % (dr[0], fl)).replace('//', '/')).strip()
             md5_rst = md5sum(fl_path)
-            ctime = stat(fl_path).st_ctime
+            if md5_rst != None:
+                ctime = stat(fl_path).st_ctime
+            else:
+                ctime = 0
+                fl_path = (bytes(fl_path, 'utf-8', 'ignore')).decode()
             if md5_rst not in files:
                 files[md5_rst] = [[ctime, fl_path]]
             else:
@@ -56,7 +63,7 @@ if __name__ == '__main__':
                 ctm, pth = item[0], item[1]
                 out_p.append((pth, ctm, key))
         else:
-            if len(files[key]) > 1:
+            if ((len(files[key]) > 1) and (key != None)):
                 files[key] = sorted(files[key])
                 files[key][0][1] = ('orig_file:'+(files[key][0][1].strip()))
                 for item in files[key]:
